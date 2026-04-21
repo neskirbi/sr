@@ -1,0 +1,11 @@
+1.- Complementar la interface de super usuario con la opcion de dar de alta equipos y operadores 
+
+2.-En equipos tener el campo de la vercion de dispositivo("Chapa") ej. V3 V4 V5
+
+
+3.- Agregar Fechas de alta de equipos
+
+
+4.-Agregar bloqueo por falta de pago 
+5.-Agregar modulo para la administracion de pagos 
+php artisan migrate:refresh --path=/database/migrations/2024_06_03_221208_create_operadores.php
