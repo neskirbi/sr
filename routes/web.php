@@ -23,6 +23,10 @@ Route::get('/', function () {
         return redirect('administracion/operadores');
     }   
 
+    if(Auth::guard('supervisores')->check()){
+        return redirect('supervicion/asistencias');
+    }   
+
     if(Auth::guard('operadores')->check()){
         return redirect('equiposop');
     }  
@@ -83,6 +87,11 @@ Route::post('Ingresar', 'App\Http\Controllers\Login\LoginController@Ingresar');
   //Route::resource('geocercas', 'App\Http\Controllers\Administrador\GeocercaController');
 
   /**
+   * Rutas Supervisores
+   */
+    Route::resource('supervicion/asistencias', 'App\Http\Controllers\Supervisores\AsistenciaController');
+
+   /**
    * Rutas Operadores
    */
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SuperUsuario;
 use App\Models\Administrador;
 use App\Models\Operador;
+use App\Models\Supervisor;
 class LoginController extends Controller
 {
     function index(){
@@ -52,7 +53,27 @@ class LoginController extends Controller
         }
 
 
-        $opr = Operador::where([
+        $sup = Supervisor::where([
+            'mail' => $request->mail
+        ])->first();
+
+        if($sup){
+            if($sup->temp!='' ){
+                if($sup->temp==$request->pass){
+                    return redirect(('newpass/'.$sup->id));
+                }else{
+                    return redirect('login')->with('error','Contraseña erronea.');
+                }
+                
+            }
+            if(!password_verify($request->pass,$sup->pass)){
+                return redirect('login')->with('error', '¡Error de contraseña!');
+            }
+            Auth::guard('supervisores')->login($sup);
+            return redirect('/');
+        }
+
+         $opr = Operador::where([
             'mail' => $request->mail
         ])->first();
 
@@ -90,10 +111,19 @@ class LoginController extends Controller
             Auth::guard('operadores')->logout();
             return redirect('/');
         }
+
+        if( Auth::guard('supervisores')->check()){
+            Auth::guard('supervisores')->logout();
+            return redirect('/');
+        }
     }
 
     function NewPass($id){
         if($usuario = Administrador::find($id)){
+            return view('login.newpass',['usuario'=>$usuario]);
+        }
+
+        if($usuario = Supervisor::find($id)){
             return view('login.newpass',['usuario'=>$usuario]);
         }
 
@@ -116,6 +146,18 @@ class LoginController extends Controller
          
             
             Auth::guard('administradores')->login($adm);
+
+            return redirect('/');
+        }
+
+
+        if($sup = Supervisor::find($id)){            
+            $sup->pass = password_hash($request->pass, PASSWORD_DEFAULT);
+            $sup->temp = '';
+            $sup->save();
+         
+            
+            Auth::guard('supervisores')->login($sup);
 
             return redirect('/');
         }

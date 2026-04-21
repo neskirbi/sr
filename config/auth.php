@@ -56,6 +56,11 @@ return [
             'provider' => 'clientes',
         ],
 
+        'supervisores' => [
+            'driver' => 'session',
+            'provider' => 'supervisores',
+        ],
+
         'operadores' => [
             'driver' => 'session',
             'provider' => 'operadores',
@@ -100,6 +105,10 @@ return [
         'operadores' => [
             'driver' => 'eloquent',
             'model' => App\Models\Operador::class,
+        ],
+        'supervisores' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Supervisor::class,
         ],
 
         // 'users' => [

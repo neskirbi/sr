@@ -62,6 +62,10 @@ function GetId(){
         return Auth::guard('administradores')->user()->id;
     }
 
+    if(Auth::guard('supervisores')->check()){
+        return Auth::guard('supervisores')->user()->id;
+    }
+
     if(Auth::guard('operadores')->check()){
         return Auth::guard('operadores')->user()->id;
     }
